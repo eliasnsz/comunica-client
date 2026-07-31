@@ -22,6 +22,9 @@
 	"author": "Elias Souza <eliasnsz.dev@gmail.com>",
 	"type": "module",
 	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1",
