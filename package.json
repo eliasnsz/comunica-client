@@ -1,0 +1,28 @@
+{
+  "name": "comunica-client",
+  "version": "0.1.0",
+  "description": "Cliente para a API do Comunica (PJe), que simplifica requisições e padroniza o acesso às comunicações processuais.",
+  "keywords": [
+    "pje",
+    "cnj",
+    "comunica",
+    "datajud",
+    "djen",
+    "api"
+  ],
+  "homepage": "https://github.com/eliasnsz/comunica-client#readme",
+  "bugs": {
+    "url": "https://github.com/eliasnsz/comunica-client/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliasnsz/comunica-client.git"
+  },
+  "license": "ISC",
+  "author": "Elias Souza <eliasnsz.dev@gmail.com>",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
