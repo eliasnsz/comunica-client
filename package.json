@@ -28,16 +28,19 @@
 	"scripts": {
 		"build": "tsc",
 		"test": "vitest run",
+		"test:watch": "vitest",
 		"prepublishOnly": "npm run build",
 		"lint:check": "biome check",
 		"lint:fix": "biome check --write"
 	},
 	"devDependencies": {
 		"@types/node": "^26.1.2",
+		"nock": "^14.0.17",
 		"typescript": "^7.0.2",
 		"vitest": "^4.1.10"
 	},
 	"dependencies": {
-		"@biomejs/biome": "^2.5.6"
+		"@biomejs/biome": "^2.5.6",
+		"axios": "^1.19.0"
 	}
 }

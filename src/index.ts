@@ -1,1 +1,3 @@
-console.log("hello, world");
+export * from "./types.js";
+
+export { ComunicaClient } from "./client.js";
