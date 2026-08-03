@@ -1,22 +1,27 @@
 import type { ComunicacaoApiDTO } from "../types.js";
+import { Advogado } from "./advogado.js";
 import { Classe } from "./classe.js";
+import { Destinatarios } from "./destinatarios.js";
+import { Oab } from "./oab.js";
 import { Orgao } from "./orgao.js";
+import { Parte } from "./parte.js";
 
 export type ComunicacaoProps = {
-	readonly id: number;
-	readonly hash: string;
-	readonly numeroUnico: string;
-	readonly siglaTribunal: string;
-	readonly status: string;
-	readonly dataDisponibilizacao: string;
-	readonly tipoDocumento: string;
-	readonly tipoComunicacao: string;
-	readonly texto: string;
-	readonly link: string;
-	readonly meio: "D" | "E";
-	readonly orgao: Orgao;
-	readonly classe: Classe;
-	readonly ativo: boolean;
+	id: number;
+	hash: string;
+	numeroUnico: string;
+	siglaTribunal: string;
+	status: string;
+	dataDisponibilizacao: string;
+	tipoDocumento: string;
+	tipoComunicacao: string;
+	texto: string;
+	link: string;
+	meio: "D" | "E";
+	destinatarios: Destinatarios;
+	orgao: Orgao;
+	classe: Classe;
+	ativo: boolean;
 };
 
 export class Comunicacao {
@@ -54,6 +59,10 @@ export class Comunicacao {
 		return this.props.orgao;
 	}
 
+	get destinatarios() {
+		return this.props.destinatarios;
+	}
+
 	get dataDisponibilizacao() {
 		return new Date(this.props.dataDisponibilizacao);
 	}
@@ -78,6 +87,22 @@ export class Comunicacao {
 			classe: new Classe({
 				codigo: props.codigoClasse,
 				nome: props.nomeClasse,
+			}),
+			destinatarios: new Destinatarios({
+				partes: props.destinatarios?.map(
+					(p) => new Parte({ nome: p.nome, polo: p.polo }),
+				),
+				advogados: props.destinatarioadvogados?.map(
+					(p) =>
+						new Advogado({
+							id: p.advogado_id,
+							oab: new Oab({
+								numero: p.advogado.numero_oab,
+								uf: p.advogado.uf_oab,
+							}),
+							nome: p.advogado.nome,
+						}),
+				),
 			}),
 			ativo: props.ativo,
 		});
