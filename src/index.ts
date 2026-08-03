@@ -1,3 +1,2 @@
-export * from "./types.js";
-
 export { ComunicaClient } from "./client.js";
+export * from "./types.js";
