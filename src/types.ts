@@ -19,7 +19,7 @@ export type ComunicacoesAPIResponse =
 	| {
 			status: "success";
 			message: string;
-			count: 10000; // API sempre retorna 10000, independente dos parâmetros de paginação
+			count: number;
 			items: Comunicacao[];
 	  }
 	| {
