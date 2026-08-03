@@ -1,3 +1,5 @@
+import type { DestinatarioApiDTO } from "../types.js";
+
 export type ParteProps = {
 	nome: string;
 	polo: "P" | "A";
@@ -16,5 +18,12 @@ export class Parte {
 
 	get polo() {
 		return this.props.polo;
+	}
+
+	static fromApiDTO(props: DestinatarioApiDTO) {
+		return new Parte({
+			nome: props.nome,
+			polo: props.polo,
+		});
 	}
 }

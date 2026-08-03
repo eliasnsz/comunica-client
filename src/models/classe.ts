@@ -1,3 +1,5 @@
+import type { ComunicacaoApiDTO } from "../types.js";
+
 export type ClasseProps = {
 	codigo: string;
 	nome: string;
@@ -6,7 +8,7 @@ export type ClasseProps = {
 export class Classe {
 	protected props: ClasseProps;
 
-	constructor(props: ClasseProps) {
+	private constructor(props: ClasseProps) {
 		this.props = props;
 	}
 
@@ -16,5 +18,12 @@ export class Classe {
 
 	get nome() {
 		return this.props.nome;
+	}
+
+	static fromApiDTO(props: ComunicacaoApiDTO) {
+		return new Classe({
+			codigo: props.codigoClasse,
+			nome: props.nomeClasse,
+		});
 	}
 }

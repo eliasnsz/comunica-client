@@ -1,4 +1,5 @@
-import type { Oab } from "./oab.js";
+import type { DestinatarioAdvogadoApiDTO } from "../types.js";
+import { Oab } from "./oab.js";
 
 export type AdvogadoProps = {
 	id: number;
@@ -9,7 +10,7 @@ export type AdvogadoProps = {
 export class Advogado {
 	protected props: AdvogadoProps;
 
-	constructor(props: AdvogadoProps) {
+	private constructor(props: AdvogadoProps) {
 		this.props = props;
 	}
 
@@ -23,5 +24,16 @@ export class Advogado {
 
 	get oab() {
 		return this.props.oab;
+	}
+
+	static fromApiDTO(props: DestinatarioAdvogadoApiDTO) {
+		return new Advogado({
+			id: props.advogado_id,
+			nome: props.advogado.nome,
+			oab: new Oab({
+				numero: props.advogado.numero_oab,
+				uf: props.advogado.uf_oab,
+			}),
+		});
 	}
 }

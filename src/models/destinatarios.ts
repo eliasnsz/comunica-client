@@ -1,5 +1,6 @@
-import type { Advogado } from "./advogado.js";
-import type { Parte } from "./parte.js";
+import type { ComunicacaoApiDTO } from "../types.js";
+import { Advogado } from "./advogado.js";
+import { Parte } from "./parte.js";
 
 export type DestinatariosProps = {
 	partes: Parte[];
@@ -9,7 +10,7 @@ export type DestinatariosProps = {
 export class Destinatarios {
 	protected props: DestinatariosProps;
 
-	constructor(props: DestinatariosProps) {
+	private constructor(props: DestinatariosProps) {
 		this.props = props;
 	}
 
@@ -19,5 +20,12 @@ export class Destinatarios {
 
 	get advogados() {
 		return this.props.advogados;
+	}
+
+	static fromApiDTO(props: ComunicacaoApiDTO) {
+		return new Destinatarios({
+			advogados: (props.destinatarioadvogados ?? []).map(Advogado.fromApiDTO),
+			partes: (props.destinatarios ?? []).map(Parte.fromApiDTO),
+		});
 	}
 }
