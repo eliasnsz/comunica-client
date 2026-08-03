@@ -52,27 +52,27 @@ export type ComunicacaoApiDTO = {
 	datadisponibilizacao: string;
 	meiocompleto: string;
 	numeroprocessocommascara: string;
-	destinatarios: Destinatario[];
-	destinatarioadvogados: [];
+	destinatarios: DestinatarioApiDTO[];
+	destinatarioadvogados: DestinatarioAdvogadoApiDTO[];
 };
 
-export type Destinatario = {
+export type DestinatarioApiDTO = {
 	nome: string;
 	comunicacao_id: number;
 	polo: "P" | "A";
 };
 
-export type DestinatarioAdvogado = {
+export type DestinatarioAdvogadoApiDTO = {
 	id: number;
 	comunicacao_id: number;
 	advogado_id: number;
-	advogado: Advogado;
+	advogado: AdvogadoApiDTO;
 	/** Formato YYYY-MM-DDTHH:mm:ss */
 	created_at: string;
 	updated_at: string;
 };
 
-export type Advogado = {
+export type AdvogadoApiDTO = {
 	id: number;
 	nome: string;
 	numero_oab: string;
