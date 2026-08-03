@@ -1,5 +1,6 @@
 import type { ComunicacaoApiDTO } from "../types.js";
 import { Classe } from "./classe.js";
+import { Orgao } from "./orgao.js";
 
 export type ComunicacaoProps = {
 	readonly id: number;
@@ -13,8 +14,7 @@ export type ComunicacaoProps = {
 	readonly texto: string;
 	readonly link: string;
 	readonly meio: "D" | "E";
-	readonly idOrgao: number;
-	readonly nomeOrgao: string;
+	readonly orgao: Orgao;
 	readonly classe: Classe;
 	readonly ativo: boolean;
 };
@@ -50,6 +50,10 @@ export class Comunicacao {
 		return this.props.classe;
 	}
 
+	get orgao() {
+		return this.props.orgao;
+	}
+
 	get dataDisponibilizacao() {
 		return new Date(this.props.dataDisponibilizacao);
 	}
@@ -67,8 +71,10 @@ export class Comunicacao {
 			texto: props.texto,
 			link: props.link,
 			meio: props.meio,
-			idOrgao: props.idOrgao,
-			nomeOrgao: props.nomeOrgao,
+			orgao: new Orgao({
+				id: props.idOrgao,
+				nome: props.nomeOrgao,
+			}),
 			classe: new Classe({
 				codigo: props.codigoClasse,
 				nome: props.nomeClasse,
