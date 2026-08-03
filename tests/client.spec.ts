@@ -13,7 +13,7 @@ describe("ComunicaClient", () => {
 	describe("buscarComunicacoes", () => {
 		it("deveria buscar as comunicações com os parâmetros informados", async () => {
 			nock(BASE_URL)
-				.get("/api/v1/comunicacoes")
+				.get("/api/v1/comunicacao")
 				.query({
 					numeroProcesso: "0001234-56.2018.2.00.0000",
 				})

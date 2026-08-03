@@ -14,7 +14,7 @@ export class ComunicaClient {
 	}
 
 	async buscarComunicacoes(filters: Partial<ComunicacoesFilters>) {
-		const url = "/api/v1/comunicacoes";
+		const url = "/api/v1/comunicacao";
 
 		const response = await this.httpClient.get(url, {
 			params: filters,
