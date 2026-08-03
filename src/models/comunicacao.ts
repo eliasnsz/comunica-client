@@ -9,7 +9,7 @@ export type ComunicacaoProps = {
 	numeroUnico: string;
 	siglaTribunal: string;
 	status: string;
-	dataDisponibilizacao: string;
+	dataDisponibilizacao: Date;
 	tipoDocumento: string;
 	tipoComunicacao: string;
 	texto: string;
@@ -61,7 +61,31 @@ export class Comunicacao {
 	}
 
 	get dataDisponibilizacao() {
-		return new Date(this.props.dataDisponibilizacao);
+		return this.props.dataDisponibilizacao;
+	}
+
+	get tipoDocumento() {
+		return this.props.tipoDocumento;
+	}
+
+	get tipoComunicacao() {
+		return this.props.tipoComunicacao;
+	}
+
+	get texto() {
+		return this.props.texto;
+	}
+
+	get link() {
+		return this.props.link;
+	}
+
+	get meio() {
+		return this.props.meio;
+	}
+
+	isEqual(other: Comunicacao) {
+		return this.hash === other.hash;
 	}
 
 	static fromApiDTO(props: ComunicacaoApiDTO) {
@@ -71,7 +95,7 @@ export class Comunicacao {
 			numeroUnico: props.numero_processo,
 			siglaTribunal: props.siglaTribunal,
 			status: props.status,
-			dataDisponibilizacao: props.data_disponibilizacao,
+			dataDisponibilizacao: new Date(props.data_disponibilizacao),
 			tipoDocumento: props.tipoDocumento,
 			tipoComunicacao: props.tipoComunicacao,
 			texto: props.texto,
