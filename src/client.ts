@@ -1,28 +1,53 @@
-import axios, { type AxiosInstance } from "axios";
+import axios, { type AxiosInstance, type AxiosResponse } from "axios";
+import { ComunicaError } from "./errors.js";
 import { Comunicacao } from "./models/comunicacao.js";
 import type { ComunicacoesAPIResponse, ComunicacoesFilters } from "./types.js";
 
-export class ComunicaClient {
-	private baseURL: string;
-	private httpClient: AxiosInstance;
+export type ComunicaClientOptions = {
+	baseURL?: string;
+	timeout?: number;
+	httpClient?: AxiosInstance;
+};
 
-	constructor() {
-		this.baseURL = "https://comunicaapi.pje.jus.br";
-		this.httpClient = axios.create({
-			baseURL: this.baseURL,
-			timeout: 1000 * 10, // 10s
-		});
+const DEFAULT_BASE_URL = "https://comunicaapi.pje.jus.br";
+const DEFAULT_TIMEOUT = 1000 * 10; // 10s
+
+export class ComunicaClient {
+	private readonly baseURL: string;
+	private readonly httpClient: AxiosInstance;
+
+	constructor(options: ComunicaClientOptions = {}) {
+		this.baseURL = options.baseURL ?? DEFAULT_BASE_URL;
+		this.httpClient =
+			options.httpClient ??
+			axios.create({
+				baseURL: this.baseURL,
+				timeout: options.timeout ?? DEFAULT_TIMEOUT,
+			});
 	}
 
 	async buscarComunicacoes(filters: Partial<ComunicacoesFilters>) {
 		const url = "/api/v1/comunicacao";
 
-		const response = await this.httpClient.get<ComunicacoesAPIResponse>(url, {
-			params: filters,
-		});
+		let response: AxiosResponse<ComunicacoesAPIResponse>;
+		try {
+			response = await this.httpClient.get<ComunicacoesAPIResponse>(url, {
+				params: filters,
+			});
+		} catch (error) {
+			const status = axios.isAxiosError(error)
+				? error.response?.status
+				: undefined;
+			throw new ComunicaError("Falha na requisição à API do Comunica", {
+				...(status !== undefined && { status }),
+				cause: error,
+			});
+		}
 
 		if (response.data.status !== "success") {
-			throw new Error("Ocorreu um erro ao buscar as comunicações");
+			throw new ComunicaError("Ocorreu um erro ao buscar as comunicações", {
+				status: response.status,
+			});
 		}
 
 		return {

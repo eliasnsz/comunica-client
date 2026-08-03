@@ -1,5 +1,6 @@
 import nock from "nock";
 import { ComunicaClient } from "../src/client.js";
+import { ComunicaError } from "../src/errors.js";
 import { Comunicacao } from "../src/models/comunicacao.js";
 
 const BASE_URL = "https://comunicaapi.pje.jus.br";
@@ -44,6 +45,52 @@ describe("ComunicaClient", () => {
 			expect(data.items[0].dataDisponibilizacao).toEqual(
 				new Date("2026-08-03"),
 			);
+		});
+
+		it("deveria usar o baseURL informado nas opções", async () => {
+			const customBaseURL = "https://api.example.com";
+			const customClient = new ComunicaClient({ baseURL: customBaseURL });
+
+			nock(customBaseURL).get("/api/v1/comunicacao").reply(200, {
+				status: "success",
+				message: "Sucesso",
+				count: 0,
+				items: [],
+			});
+
+			const data = await customClient.buscarComunicacoes({});
+
+			expect(data.count).toEqual(0);
+			expect(data.items).toEqual([]);
+		});
+
+		it("deveria lançar ComunicaError quando a API retorna erro", async () => {
+			nock(BASE_URL).get("/api/v1/comunicacao").reply(200, {
+				status: "error",
+				message: "Erro interno",
+			});
+
+			const promise = client.buscarComunicacoes({});
+
+			await expect(promise).rejects.toBeInstanceOf(ComunicaError);
+			await expect(promise).rejects.toMatchObject({
+				name: "ComunicaError",
+				status: 200,
+			});
+		});
+
+		it("deveria lançar ComunicaError em falha de rede", async () => {
+			nock(BASE_URL)
+				.get("/api/v1/comunicacao")
+				.replyWithError("connection refused");
+
+			const promise = client.buscarComunicacoes({});
+
+			await expect(promise).rejects.toBeInstanceOf(ComunicaError);
+			await expect(promise).rejects.toMatchObject({
+				name: "ComunicaError",
+				status: undefined,
+			});
 		});
 	});
 });

@@ -16,7 +16,7 @@ export class Oab {
 		return this.props.numero;
 	}
 
-	get UF() {
+	get uf() {
 		return this.props.uf;
 	}
 }
