@@ -20,14 +20,14 @@ export type ComunicacoesAPIResponse =
 			status: "success";
 			message: string;
 			count: number;
-			items: Comunicacao[];
+			items: ComunicacaoApiDTO[];
 	  }
 	| {
 			status: "error";
 			message: string;
 	  };
 
-export type Comunicacao = {
+export type ComunicacaoApiDTO = {
 	id: number;
 	/**  Formato YYYY-MM-DD. */
 	data_disponibilizacao: string;

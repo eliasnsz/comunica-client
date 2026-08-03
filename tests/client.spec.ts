@@ -1,5 +1,6 @@
 import nock from "nock";
 import { ComunicaClient } from "../src/client.js";
+import { Comunicacao } from "../src/models/comunicacao.js";
 
 const BASE_URL = "https://comunicaapi.pje.jus.br";
 
@@ -20,11 +21,13 @@ describe("ComunicaClient", () => {
 				.reply(200, {
 					status: "success",
 					message: "Sucesso",
+					count: 1,
 					items: [
 						{
 							id: 684242500,
 							siglaTribunal: "TJAL",
 							tipoComunicacao: "Intimação",
+							data_disponibilizacao: "2026-08-03",
 						},
 					],
 				});
@@ -33,11 +36,14 @@ describe("ComunicaClient", () => {
 				numeroProcesso: "0001234-56.2018.2.00.0000",
 			});
 
-			expect(data.status).toEqual("success");
+			expect(data.count).toEqual(1);
 			expect(data.items).toHaveLength(1);
+			expect(data.items[0]).toBeInstanceOf(Comunicacao);
 			expect(data.items[0].id).toEqual(684242500);
 			expect(data.items[0].siglaTribunal).toEqual("TJAL");
-			expect(data.items[0].tipoComunicacao).toEqual("Intimação");
+			expect(data.items[0].dataDisponibilizacao).toEqual(
+				new Date("2026-08-03"),
+			);
 		});
 	});
 });

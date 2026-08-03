@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
-import type { ComunicacoesFilters } from "./types.js";
+import { Comunicacao } from "./models/comunicacao.js";
+import type { ComunicacoesAPIResponse, ComunicacoesFilters } from "./types.js";
 
 export class ComunicaClient {
 	private baseURL: string;
@@ -16,10 +17,17 @@ export class ComunicaClient {
 	async buscarComunicacoes(filters: Partial<ComunicacoesFilters>) {
 		const url = "/api/v1/comunicacao";
 
-		const response = await this.httpClient.get(url, {
+		const response = await this.httpClient.get<ComunicacoesAPIResponse>(url, {
 			params: filters,
 		});
 
-		return response.data;
+		if (response.data.status !== "success") {
+			throw new Error("Ocorreu um erro ao buscar as comunicações");
+		}
+
+		return {
+			count: response.data.count,
+			items: response.data.items.map(Comunicacao.fromApiDTO),
+		};
 	}
 }
